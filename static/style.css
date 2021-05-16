@@ -1,0 +1,47 @@
+h2.author {
+  display:inline;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 1.6vw;
+}
+h2.date {
+  display:inline;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 1.1vw;
+}
+
+h2.post{
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-size: 1vw;
+}
+
+#firstPost{
+  margin-top: 1vw;
+
+}
+.postContainer{
+  max-width: 60vw;
+  margin-left: 3vw;
+  margin-bottom: 1vw;
+  padding-left: 1vw;
+  padding-bottom: 0.7vw;
+  padding-top: 1vw;
+  white-space: normal;
+}
+
+.createPost {
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+    Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-size: 1.1vw;
+    display:inline-block;
+    position:absolute;
+    right:0;
+    margin-right:0px;
+    width: 20vw;
+}
+
+#submitButton {
+  width: 10vw;
+}

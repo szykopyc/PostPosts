@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostPosts</title>
+    <link rel="stylesheet" href='{{ url_for('static', filename='style.css') }}' />
+</head>
+<body>
+    <div class="container">
+        <div class="createPost">
+            <form action="/createpost" method="post">
+                Name:<br><input type="text" name="authorName"><br>
+                Post:<br><input type="text" name="postContent"><br>
+                <input id="submitButton" type="submit" name="login" value="Post!">
+            </form>
+
+            <form action="/deleteall" method="post">
+                <input id="deleteButton" type="submit" value="Delete All Posts!">
+            </form>
+        </div>
+          
+        {% for post in posts: %}
+        {% if post == posts[0]: %}
+        <div class="postContainer" id="firstPost">
+        <h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        <h2 class="post">{{ post[3] }}</h2>
+        </div>
+        {% endif %}
+        {% if post != posts[0]: %}
+        <div class="postContainer">
+        <h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        <h2 class="post">{{ post[3] }}</h2>
+        </div>
+        {% endif %}
+        {% endfor %}   
+    </div>
+    
+</body>
+</html>
