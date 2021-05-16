@@ -66,7 +66,7 @@ def createPost():
         file= request.files['file']
       except Exception as e:
         print(e)
-      if postContent!='' or file:
+      if postContent!='' or file and file.filename.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):
         nocontentwarning=''
         try:
           file_name = file.filename
@@ -86,26 +86,16 @@ def createPost():
           post(authorName,postContent)
         return redirect('/')
 
+      elif file.filename.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.mp4','.mov','.webm','.ogg','.mpeg','.m4p'))!=True:
+        nocontentwarning="You have given an unsupported file type!"
+        return redirect('/')
+
+
       else:
         nocontentwarning="You haven't given anything to post, please enter some content!"
         return redirect('/')
     else:
       warning="No display name entered, please enter one!"
-      return redirect('/')
-
-
-  @app.route('/deleteall',methods=['POST'])
-  def deleteAll():
-    try:
-      max=getMaxID()
-      arrayOfIDs=[]
-      for i in range(max[0][0]):
-        arrayOfIDs.append(i)
-      arrayOfIDs.append(len(arrayOfIDs))
-      deletePosts(arrayOfIDs)
-      arrayOfIDs=[]
-      return redirect('/')
-    except:
       return redirect('/')
     
 
