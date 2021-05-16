@@ -45,3 +45,12 @@ h2.post{
 #submitButton {
   width: 10vw;
 }
+
+img {
+  max-width: 60vw;
+  max-height: 20vw;
+}
+
+#deleteall {
+  width:20vw;
+}

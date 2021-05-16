@@ -2,24 +2,29 @@ import sqlite3
 from flask import Flask, render_template, url_for,request,redirect
 from threading import Thread
 from datetime import datetime
+from werkzeug.utils import secure_filename
+import os
 
+app_root = os.path.dirname(os.path.abspath(__file__))
+warning=''
+nocontentwarning=''
 app=Flask(__name__)
 app.config['SECRET_KEY']="szykopyc"
 
 def init():
   con = sqlite3.connect("PostPosts.db")
   cur = con.cursor()
-  cur.execute('''CREATE TABLE posts(id INT PRIMARY KEY,date TEXT NOT NULL, author TEXT NOT NULL, post TEXT NOT NULL);''')
+  cur.execute('''CREATE TABLE posts(id INT PRIMARY KEY,date TEXT NOT NULL, author TEXT NOT NULL, post TEXT NOT NULL, imagePath TEXT);''')
   con.commit()
   con.close()
 
-def post(author,textToPost):
+def post(author,textToPost,imageURL=''):
   now = datetime.now()
   date = str(now.strftime("%d %B %Y"))
   con = sqlite3.connect("PostPosts.db")
   cur = con.cursor()
   try:
-    cur.execute(f'''INSERT INTO posts(date,author,post) VALUES('{date}','{author}','{textToPost}');''')
+    cur.execute(f'''INSERT INTO posts(date,author,post,imagePath) VALUES('{date}','{author}','{textToPost}','{imageURL}');''')
   except Exception as e:
     print(e)
   con.commit()
@@ -28,7 +33,7 @@ def post(author,textToPost):
 def showPosts():
   con = sqlite3.connect("PostPosts.db")
   cur = con.cursor()
-  cur.execute('''SELECT rowid,date,author,post FROM posts;''')
+  cur.execute('''SELECT rowid,date,author,post,imagePath FROM posts;''')
   data=cur.fetchall()
   con.close()
   return data
@@ -50,24 +55,59 @@ def getMaxID():
 
 @app.route('/createpost',methods=['POST'])
 def createPost():
-  authorName = request.form['authorName']
-  postContent = request.form['postContent']
-  post(authorName,postContent)
-  return redirect('/')
+  global warning
+  global nocontentwarning
+  if request.method=='POST':
+    authorName = request.form['authorName']
+    if authorName !='':
+      warning=''
+      postContent = request.form['postContent']
+      try:
+        image= request.files['img']
+      except Exception as e:
+        print(e)
+      if postContent!='' or image:
+        nocontentwarning=''
+        try:
+          file_name = image.filename
+        except:
+          file_name=''
 
-@app.route('/deleteall',methods=['POST'])
-def deleteAll():
-  try:
-    max=getMaxID()
-    arrayOfIDs=[]
-    for i in range(max[0][0]):
-      arrayOfIDs.append(i)
-    arrayOfIDs.append(len(arrayOfIDs))
-    deletePosts(arrayOfIDs)
-    arrayOfIDs=[]
-    return redirect('/')
-  except:
-    return redirect('/')
+        if file_name!='':
+          destination = 'static/img/'+file_name
+        try:
+          image.save(destination)
+        except:
+          pass
+
+        try:
+          post(authorName,postContent,destination)
+        except:
+          post(authorName,postContent)
+        return redirect('/')
+
+      else:
+        nocontentwarning="You haven't given anything to post, please enter some content!"
+        return redirect('/')
+    else:
+      warning="No display name entered, please enter one!"
+      return redirect('/')
+
+
+  @app.route('/deleteall',methods=['POST'])
+  def deleteAll():
+    try:
+      max=getMaxID()
+      arrayOfIDs=[]
+      for i in range(max[0][0]):
+        arrayOfIDs.append(i)
+      arrayOfIDs.append(len(arrayOfIDs))
+      deletePosts(arrayOfIDs)
+      arrayOfIDs=[]
+      return redirect('/')
+    except:
+      return redirect('/')
+    
 
 @app.route('/')
 def home():
@@ -75,7 +115,7 @@ def home():
   try:
     return render_template('index.html',posts=posts.reverse())
   except:
-    return render_template('index.html',posts=posts)
+    return render_template('index.html',posts=posts, noNameWarning=warning, noContent=nocontentwarning)
 
 if __name__ ==  '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',debug=True)

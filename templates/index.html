@@ -10,28 +10,44 @@
 <body>
     <div class="container">
         <div class="createPost">
-            <form action="/createpost" method="post">
-                Name:<br><input type="text" name="authorName"><br>
+            <p>{{ noNameWarning }}</p>
+            <p>{{ noContent }}</p>
+            <form action="/createpost" method="post" enctype="multipart/form-data">
+                Display Name:<br><input type="text" name="authorName"><br>
                 Post:<br><input type="text" name="postContent"><br>
+                Upload Image:<br><input type = "file" name = "img" /><br>
                 <input id="submitButton" type="submit" name="login" value="Post!">
             </form>
 
             <form action="/deleteall" method="post">
-                <input id="deleteButton" type="submit" value="Delete All Posts!">
+                <input id="deleteButton" type="submit" id="deleteall" value="Delete All Posts!">
             </form>
         </div>
           
         {% for post in posts: %}
+        {% set fileurl=post[4].replace(" ","%20") %}
         {% if post == posts[0]: %}
         <div class="postContainer" id="firstPost">
         <h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
         <h2 class="post">{{ post[3] }}</h2>
+        {% if post[4] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif')):%}
+        <img src={{ fileurl }}>
+        {% endif %}
+        {% if post[4] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
+        <video controls="controls" style="max-height: 20vw;" src={{ fileurl }}>Your browser does not support the video</video>
+        {% endif %}
         </div>
         {% endif %}
         {% if post != posts[0]: %}
         <div class="postContainer">
         <h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
         <h2 class="post">{{ post[3] }}</h2>
+        {% if post[4] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif')):%}
+        <img src={{ fileurl }}>
+        {% endif %}
+        {% if post[4] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
+        <video controls="controls" style="max-height: 20vw;" src={{ fileurl }}>Your browser does not support the video</video>
+        {% endif %}
         </div>
         {% endif %}
         {% endfor %}   
