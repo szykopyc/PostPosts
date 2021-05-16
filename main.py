@@ -63,20 +63,20 @@ def createPost():
       warning=''
       postContent = request.form['postContent']
       try:
-        image= request.files['img']
+        file= request.files['file']
       except Exception as e:
         print(e)
-      if postContent!='' or image:
+      if postContent!='' or file:
         nocontentwarning=''
         try:
-          file_name = image.filename
+          file_name = file.filename
         except:
           file_name=''
 
-        if file_name!='':
-          destination = 'static/img/'+file_name
+        if file_name!='' and file_name.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):
+          destination = 'static/files/'+file_name
         try:
-          image.save(destination)
+          file.save(destination)
         except:
           pass
 
