@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, render_template, url_for,request,redirect
+from flask import Flask, render_template, url_for,request,redirect,make_response
 from threading import Thread
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -58,7 +58,7 @@ def createPost():
   global warning
   global nocontentwarning
   if request.method=='POST':
-    authorName = request.form['authorName']
+    authorName = request.cookies.get('userName')
     if authorName !='':
       warning=''
       postContent = request.form['postContent']
@@ -86,7 +86,7 @@ def createPost():
           post(authorName,postContent)
         return redirect('/')
 
-      elif file.filename.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.mp4','.mov','.webm','.ogg','.mpeg','.m4p'))!=True:
+      elif file.filename.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.mp4','.mov','.webm','.ogg','.mpeg','.m4p'))!=True and postContent=='':
         nocontentwarning="You have given an unsupported file type!"
         return redirect('/')
 
@@ -97,15 +97,34 @@ def createPost():
     else:
       warning="No display name entered, please enter one!"
       return redirect('/')
-    
+
+@app.route('/login',methods=['POST', 'GET'])
+def login():
+  if request.method == 'POST':
+      username = request.form['username']
+      if username!='':
+        resp = make_response(redirect('/'))
+        resp.set_cookie('userName', username)
+        return resp
+      else:
+        return redirect('/')
+
+@app.route('/logout',methods=['POST', 'GET'])
+def logout():
+  if request.method == 'POST':
+      resp = make_response(redirect('/'))
+      resp.delete_cookie('userName')
+  return resp
+
 
 @app.route('/')
 def home():
   posts=showPosts()
+  cookie = request.cookies.get('userName')
   try:
-    return render_template('index.html',posts=posts.reverse())
+    return render_template('index.html',posts=posts.reverse(),noNameWarning=warning,noContent=nocontentwarning,cookie=cookie)
   except:
-    return render_template('index.html',posts=posts, noNameWarning=warning, noContent=nocontentwarning)
+    return render_template('index.html',posts=posts, noNameWarning=warning, noContent=nocontentwarning,cookie=cookie)
 
 if __name__ ==  '__main__':
     app.run(host='0.0.0.0',debug=True)

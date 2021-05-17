@@ -8,16 +8,29 @@
     <link rel="stylesheet" href='{{ url_for('static', filename='style.css') }}' />
 </head>
 <body>
-  <p id="title"><u>PostPosts</u></p>
   <div id="background">
+    <div class="topnav">
+      <div class="login-container">
+        {% if cookie==None: %}
+        <form action="/login" method="post">
+          <input type="text" placeholder="Username" name="username" maxlength="15">
+          <button type="submit">Login</button>
+        </form>
+        {% endif %}
+        {% if cookie!=None: %}
+        <form action="/logout" method="post">
+          <label id="logouttext">Logged in as {{cookie}}&ensp;</label><button type="submit">Logout</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    <p id="title"><u>PostPosts</u></p>
     <div class="container">
+        {% if cookie!=None: %}
         <div class="createPostWrapper">
             <p>{{ noNameWarning }}</p>
             <p>{{ noContent }}</p>
             <form action="/createpost" method="post" enctype="multipart/form-data">
-                <div class="textBoxWrapper">
-                    <span class="textBox">Display Name:<br><input type="text" name="authorName"><br></span>
-                </div>
                 <div class="textBoxWrapper">
                     <span class="textBox">Post:<br><input type="text" name="postContent"><br></span>
                 </div>
@@ -31,6 +44,7 @@
                 </div>
             </form>
         </div>
+        {% endif %}
           
         {% for post in posts: %}
         {% set fileurl=post[4].replace(" ","%20") %}
