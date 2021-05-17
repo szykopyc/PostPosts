@@ -14,7 +14,7 @@ app.config['SECRET_KEY']="szykopyc"
 def init():
   con = sqlite3.connect("PostPosts.db")
   cur = con.cursor()
-  cur.execute('''CREATE TABLE posts(id INT PRIMARY KEY,date TEXT NOT NULL, author TEXT NOT NULL, post TEXT NOT NULL, imagePath TEXT);''')
+  cur.execute('''CREATE TABLE posts(date TEXT NOT NULL, author TEXT NOT NULL, post TEXT NOT NULL, imagePath TEXT);''')
   con.commit()
   con.close()
 
