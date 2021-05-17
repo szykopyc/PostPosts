@@ -8,15 +8,26 @@
     <link rel="stylesheet" href='{{ url_for('static', filename='style.css') }}' />
 </head>
 <body>
+  <div id="background">
     <div class="container">
-        <div class="createPost">
+        <div class="createPostWrapper">
             <p>{{ noNameWarning }}</p>
             <p>{{ noContent }}</p>
             <form action="/createpost" method="post" enctype="multipart/form-data">
-                Display Name:<br><input type="text" name="authorName"><br>
-                Post:<br><input type="text" name="postContent"><br>
-                Upload Image:<br><input type = "file" name = "file" /><br>
-                <input id="submitButton" type="submit" name="login" value="Post!">
+                <div class="textBoxWrapper">
+                    <span class="textBox">Display Name:<br><input type="text" name="authorName"><br></span>
+                </div>
+                <div class="textBoxWrapper">
+                    <span class="textBox">Post:<br><input type="text" name="postContent"><br></span>
+                </div>
+                <div class="uploadBtnWrapper">
+                    <button class="btn">Upload Image/Video:</button>
+                    <input id="file"type = "file" name = "file" /><br>
+                </div>
+                <div class="SubmitBtnWrapper">
+                    <button class="btn">Post!</button>
+                    <input id="submitButton" type="submit" name="post" value="Post!">
+                </div>
             </form>
         </div>
           
@@ -26,7 +37,7 @@
         <div class="postContainer" id="firstPost">
         <h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
         <h2 class="post">{{ post[3] }}</h2>
-        {% if post[4] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif')):%}
+        {% if post[4] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
         <img src={{ fileurl }}>
         {% endif %}
         {% if post[4] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
@@ -38,7 +49,7 @@
         <div class="postContainer">
         <h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
         <h2 class="post">{{ post[3] }}</h2>
-        {% if post[4] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif')):%}
+        {% if post[4] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
         <img src={{ fileurl }}>
         {% endif %}
         {% if post[4] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
@@ -48,6 +59,6 @@
         {% endif %}
         {% endfor %}   
     </div>
-    
+  </div>
 </body>
 </html>

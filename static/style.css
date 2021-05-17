@@ -1,3 +1,9 @@
+body {
+  background-image: linear-gradient( #ff4d4d, yellow);
+  background-attachment: fixed;
+
+}
+
 h2.author {
   display:inline;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
@@ -31,7 +37,7 @@ h2.post{
   white-space: normal;
 }
 
-.createPost {
+.createPostWrapper {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
     Helvetica, Arial, "Lucida Grande", sans-serif;
     font-size: 1.1vw;
@@ -41,6 +47,7 @@ h2.post{
     margin-right:0px;
     width: 20vw;
 }
+
 
 #submitButton {
   width: 10vw;
@@ -53,4 +60,58 @@ img {
 
 #deleteall {
   width:20vw;
+}
+
+.uploadBtnWrapper {
+  margin-top: 0.7vw;
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.btn {
+  border: 2px solid black;
+  color:  white;
+  background-color:  #ff4d4d;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.uploadBtnWrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.textBoxWrapper {
+  margin-top: 0.5vw;
+  position: relative;
+  overflow: hidden;
+  
+}
+
+.textBox {
+  display: inline-block;
+  color:  white;
+  text-align: center;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.SubmitBtnWrapper {
+  margin-top: 0.5vw;
+  position: relative;
+  overflow: hidden;
+}
+
+.SubmitBtnWrapper input[type=submit] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
 }

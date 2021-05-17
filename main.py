@@ -73,7 +73,7 @@ def createPost():
         except:
           file_name=''
 
-        if file_name!='' and file_name.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):
+        if file_name!='' and file_name.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.mp4','.mov','.webm','.ogg','.mpeg','.m4p','.PNG')):
           destination = 'static/files/'+file_name
         try:
           file.save(destination)
