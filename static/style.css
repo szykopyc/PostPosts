@@ -1,6 +1,8 @@
 body {
   background-image: linear-gradient( #ff4d4d, yellow);
   background-attachment: fixed;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+    Helvetica, Arial, "Lucida Grande", sans-serif;
 
 }
 
@@ -36,7 +38,6 @@ h2.post{
   padding-top: 1vw;
   white-space: normal;
 }
-
 .createPostWrapper {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
     Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -47,28 +48,23 @@ h2.post{
     margin-right:0px;
     width: 20vw;
 }
-
-
 #submitButton {
   width: 10vw;
 }
-
 img {
   max-width: 60vw;
   max-height: 20vw;
+  border: 5px solid white;
 }
-
 #deleteall {
   width:20vw;
 }
-
 .uploadBtnWrapper {
   margin-top: 0.7vw;
   position: relative;
   overflow: hidden;
   display: inline-block;
 }
-
 .btn {
   border: 2px solid black;
   color:  white;
@@ -78,7 +74,6 @@ img {
   font-size: 17px;
   font-weight: bold;
 }
-
 .uploadBtnWrapper input[type=file] {
   font-size: 100px;
   position: absolute;
@@ -86,7 +81,6 @@ img {
   top: 0;
   opacity: 0;
 }
-
 .textBoxWrapper {
   margin-top: 0.5vw;
   position: relative;
@@ -114,4 +108,13 @@ img {
   left: 0;
   top: 0;
   opacity: 0;
+}
+
+#title {
+  font-weight: bold;
+  text-align: center;
+  margin-top: 2vw;
+  margin-bottom: 0;
+  color: white;
+  font-size: 4vw;
 }
