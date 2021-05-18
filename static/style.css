@@ -1,9 +1,13 @@
 body {
-  background-image: linear-gradient( green,LightGreen);
+  /*background-image: linear-gradient( green,LightGreen);*/
+  background-color: #1d1a26;
   background-attachment: fixed;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
     Helvetica, Arial, "Lucida Grande", sans-serif;
   color: white;
+  border: 5px solid white;
+  overflow: auto;
+  overflow-x: hidden;
 
 }
 
@@ -46,7 +50,7 @@ h2.post{
     display:inline-block;
     position:absolute;
     right:0;
-    margin-right:0px;
+    margin-right:-8vw;
     width: 20vw;
 }
 #submitButton {
@@ -69,18 +73,25 @@ img {
 .btn {
   border: 2px solid black;
   color:  white;
-  background-color:  green;
-  padding: 8px 20px;
-  border-radius: 8px;
+  background-color: #1d1a26;
+  padding: 8px 10px;
+  border-radius: 8px ;
   font-size: 17px;
   font-weight: bold;
 }
+
+#submitButton:hover:not([enabled="enabled"]) {
+  color:  black;
+  background-color: #ddd;
+}
+
 .uploadBtnWrapper input[type=file] {
   font-size: 100px;
   position: absolute;
   left: 0;
   top: 0;
   opacity: 0;
+  padding:0px;
 }
 .textBoxWrapper {
   margin-top: 0.5vw;
@@ -95,6 +106,7 @@ img {
   text-align: center;
   font-size: 17px;
   font-weight: bold;
+  padding: 0;
 }
 
 .SubmitBtnWrapper {
@@ -109,6 +121,11 @@ img {
   left: 0;
   top: 0;
   opacity: 0;
+}
+
+#SubmitButton:hover:not([enabled="enabled"]){
+  background-color: #ddd;
+  color: black;
 }
 
 #title {
