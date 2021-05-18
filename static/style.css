@@ -3,6 +3,7 @@ body {
   background-attachment: fixed;
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
     Helvetica, Arial, "Lucida Grande", sans-serif;
+  color: white;
 
 }
 
@@ -131,7 +132,7 @@ img {
 .topnav a {
   float: left;
   display: block;
-  color: black;
+  color: white;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -144,12 +145,15 @@ img {
   color: black;
 }
 
-/* Active/current link */
-.topnav a.active {
-  background-color: #2196F3;
-  color: white;
+#register {
+  background-color: #ddd;
+  color: black;
+  padding: 5px;
+  float: right;
+  margin-right: 16px;
+  font-size: 17px;
+  border: 1px solid #ccc;
 }
-
 /* Style the input container */
 .topnav .login-container {
   float: right;

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PostPosts | Register</title>
+    <link rel="stylesheet" href='{{ url_for('static', filename='style.css') }}' />
+</head>
+<body>
+  <p id="title"><u>Register</u></p>
+  <form action = "{{url_for('register')}}" method = "POST">
+         <p><h3>Register</h3></p>
+          <input type = 'text' name = 'username' placeholder="Username"/><br>
+          <input type = 'text' name = 'displayname' placeholder="Display Name"/><br>
+          <input type = 'password' name = 'password' placeholder="Password"/><br>
+          <input type = 'password' name = 'confirm' placeholder="Confirm Password"/><br>
+          <p><input type = 'submit' value = 'Register'/></p>
+      </form>
+</body>

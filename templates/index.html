@@ -4,32 +4,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PostPosts</title>
+    <title>PostPosts | Home</title>
     <link rel="stylesheet" href='{{ url_for('static', filename='style.css') }}' />
 </head>
 <body>
   <div id="background">
     <div class="topnav">
       <div class="login-container">
-        {% if cookie==None: %}
+        {% if cookie==None and passCookie==None: %}
         <form action="/login" method="post">
-          <input type="text" placeholder="Username" name="username" maxlength="15">
+          <input type="text" placeholder="Username" name="uname" maxlength="15">
+          <input type="password" placeholder="Password" name="pword">
           <button type="submit">Login</button>
         </form>
         {% endif %}
-        {% if cookie!=None: %}
+        {% if cookie!=None and passCookie!=None: %}
         <form action="/logout" method="post">
           <label id="logouttext">Logged in as {{cookie}}&ensp;</label><button type="submit">Logout</button>
         </form>
+        {% endif %}
+        {% if cookie==None and passCookie==None: %}
+        <a href={{url_for('register')}} class="active" id="register">Register</a>
         {% endif %}
       </div>
     </div>
     <p id="title"><u>PostPosts</u></p>
     <div class="container">
-        {% if cookie!=None: %}
+        {% if cookie!=None and passCookie!=None: %}
         <div class="createPostWrapper">
-            <p>{{ noNameWarning }}</p>
-            <p>{{ noContent }}</p>
+            {% if noContentCookie!=None:%}
+            <p>{{noContentCookie}}</p>
+            {% endif %}
             <form action="/createpost" method="post" enctype="multipart/form-data">
                 <div class="textBoxWrapper">
                     <span class="textBox">Post:<br><input type="text" name="postContent"><br></span>
@@ -47,27 +52,27 @@
         {% endif %}
           
         {% for post in posts: %}
-        {% set fileurl=post[4].replace(" ","%20") %}
+        {% set fileurl=post[5].replace(" ","%20") %}
         {% if post == posts[0]: %}
         <div class="postContainer" id="firstPost">
-        <h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
-        <h2 class="post">{{ post[3] }}</h2>
-        {% if post[4] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
+        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author">@{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        <h2 class="post">{{ post[4] }}</h2>
+        {% if post[5] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
         <img src={{ fileurl }}>
         {% endif %}
-        {% if post[4] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
+        {% if post[5] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
         <video controls="controls" style="max-height: 20vw;" src={{ fileurl }}>Your browser does not support the video</video>
         {% endif %}
         </div>
         {% endif %}
         {% if post != posts[0]: %}
         <div class="postContainer">
-        <h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
-        <h2 class="post">{{ post[3] }}</h2>
-        {% if post[4] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
+        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author">@{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        <h2 class="post">{{ post[4] }}</h2>
+        {% if post[5] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
         <img src={{ fileurl }}>
         {% endif %}
-        {% if post[4] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
+        {% if post[5] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
         <video controls="controls" style="max-height: 20vw;" src={{ fileurl }}>Your browser does not support the video</video>
         {% endif %}
         </div>
