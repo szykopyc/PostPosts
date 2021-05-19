@@ -13,7 +13,7 @@
       <div class="login-container">
         {% if cookie==None and passCookie==None: %}
         <form action="/login" method="post">
-          <input type="text" placeholder="Username" name="uname" maxlength="15">
+          <input type="text" placeholder="Username" name="uname">
           <input type="password" placeholder="Password" name="pword">
           <button type="submit">Login</button>
         </form>
@@ -55,7 +55,12 @@
         {% set fileurl=post[5].replace(" ","%20") %}
         {% if post == posts[0]: %}
         <div class="postContainer" id="firstPost">
+        {% if post[2]!='PostPostsDeveloper':%}
         <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author">@{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        {% endif %}
+        {% if post[2]=='PostPostsDeveloper': %}
+        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author" id="developer">@{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        {% endif %}
         <h2 class="post">{{ post[4] }}</h2>
         {% if post[5] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
         <img src={{ fileurl }}>

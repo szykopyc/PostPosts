@@ -224,3 +224,7 @@ label {
     border: 1px solid #ccc;
   }
 }
+
+#developer {
+  color: green;
+}
