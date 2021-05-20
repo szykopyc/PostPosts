@@ -40,10 +40,14 @@ def post(author,textToPost,displayName,imageURL=''):
   con.commit()
   con.close()
 
-def showPosts():
+def showPosts(searchParameter=None):
   con = sqlite3.connect("PostPosts.db")
   cur = con.cursor()
-  cur.execute('''SELECT rowid,* FROM posts;''')
+  if searchParameter==None:
+    cur.execute('''SELECT rowid,* FROM posts;''')
+  
+  else:
+    cur.execute(f'''SELECT rowid,* FROM posts WHERE username='@'||'{searchParameter}' OR displayName='{searchParameter}' OR post = '{searchParameter}'; ''')
   data=cur.fetchall()
   con.close()
   return data
@@ -104,6 +108,8 @@ def createPost():
 def login():
   if request.method == 'POST':
       user = request.form['uname']
+      if user[0]!='@':
+        user='@'+user 
       passw = request.form['pword']
       passw=passw.encode()
       resp = make_response(redirect('/'))
@@ -135,6 +141,7 @@ def logout():
 def register():
   if request.method=="POST":
     username = request.form['username']
+    username='@'+username
     display = request.form['displayname']
     password=request.form['password']
     confirm=request.form['confirm']
@@ -152,17 +159,32 @@ def register():
       return redirect('/')
   return render_template('register.html')
 
+@app.route('/searchpost', methods=['POST','GET'])
+def searchPost():
+  if request.method=="POST":
+    posts=showPosts(request.form['searchQuery'])
+    userName = request.cookies.get('userName')
+    userPassword=request.cookies.get('userPassword')
+    noContentCookie=request.cookies.get('nocontentwarning')
+
+    try:
+      return render_template('index.html',posts=posts.reverse(),noContentCookie=noContentCookie,cookie=userName,passCookie=userPassword)
+    except:
+      return render_template('index.html',posts=posts, noContentCookie=noContentCookie,cookie=userName,passCookie=userPassword)
+
+
 @app.route('/')
 def home():
   posts=showPosts()
   userName = request.cookies.get('userName')
   userPassword=request.cookies.get('userPassword')
   noContentCookie=request.cookies.get('nocontentwarning')
-
   try:
     return render_template('index.html',posts=posts.reverse(),noContentCookie=noContentCookie,cookie=userName,passCookie=userPassword)
   except:
     return render_template('index.html',posts=posts, noContentCookie=noContentCookie,cookie=userName,passCookie=userPassword)
+
+
 
 if __name__ ==  '__main__':
     app.run(host='0.0.0.0',debug=True)

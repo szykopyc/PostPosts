@@ -8,8 +8,10 @@ body {
   border: 5px solid white;
   overflow: auto;
   overflow-x: hidden;
-
+  word-wrap: break-word; 
 }
+
+html,body { min-height: 100%; }
 
 h2.author {
   display:inline;
@@ -43,6 +45,11 @@ h2.post{
   padding-top: 1vw;
   white-space: normal;
 }
+
+.postContent {
+  width: 10vw;
+}
+
 .createPostWrapper {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
     Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -76,7 +83,6 @@ img {
   background-color: #1d1a26;
   padding: 8px 10px;
   border-radius: 8px ;
-  font-size: 17px;
   font-weight: bold;
 }
 
@@ -167,9 +173,10 @@ img {
   color: black;
   padding: 5px;
   float: right;
-  margin-right: 16px;
-  font-size: 17px;
-  border: 1px solid #ccc;
+  margin-right: 1vw;
+  font-size: 1vw;
+  min-width: 1.2vw;
+  min-height: 3vw;
 }
 /* Style the input container */
 .topnav .login-container {
@@ -190,11 +197,13 @@ img {
   float: right;
   padding: 6px;
   margin-top: 8px;
-  margin-right: 16px;
+  margin-right: 1vw;
   background: #ddd;
   font-size: 17px;
   border: none;
   cursor: pointer;
+  font-size: 0.8vw;
+  min-height: 3vw;
 }
 
 label {
@@ -219,12 +228,57 @@ label {
     width: 100%;
     margin: 0;
     padding: 14px;
+    font-size: 4vw;
   }
   .topnav input[type=text] {
     border: 1px solid #ccc;
+    font-size: 5vw;
+  }
+  .topnav input{
+    min-width: 100%;
+    min-height: 3vw;
+  }
+  ::-webkit-input-placeholder {
+    text-align: center;
+    font-size: 4vw;
   }
 }
 
 #developer {
   color: green;
+}
+
+.searchPost{
+  margin-left: 4vw;
+  font-size: 5vw;
+}
+
+#searchQuery{
+  font-size: 0.8vw;
+  min-width: 9vw;
+  border:0;
+  min-height: 3vw;
+}
+
+#searchQuery::-webkit-input-placeholder{
+  text-align: center;
+}
+
+#logouttext,#logoutbutton {
+  font-size: 1.2vw;
+}
+
+#username,#password {
+  font-size: 1vw;
+  border:0;
+  min-height: 3vw;
+}
+
+#username,#password::-webkit-input-placeholder {
+  text-align: center;
+}
+  
+
+#loginBtn{
+  font-size: 1.5vw;
 }

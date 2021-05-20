@@ -13,22 +13,27 @@
       <div class="login-container">
         {% if cookie==None and passCookie==None: %}
         <form action="/login" method="post">
-          <input type="text" placeholder="Username" name="uname">
-          <input type="password" placeholder="Password" name="pword">
-          <button type="submit">Login</button>
+          <input type="text" placeholder="Username" name="uname" id="username">
+          <input type="password" placeholder="Password" name="pword" id="password">
+          <button type="submit" id="loginBtn">Login</button>
         </form>
         {% endif %}
         {% if cookie!=None and passCookie!=None: %}
         <form action="/logout" method="post">
-          <label id="logouttext">Logged in as {{cookie}}&ensp;</label><button type="submit">Logout</button>
+          <label id="logouttext">Logged in as {{cookie}}&ensp;</label><button type="submit" id="logoutButton">Logout</button>
         </form>
         {% endif %}
         {% if cookie==None and passCookie==None: %}
-        <a href={{url_for('register')}} class="active" id="register">Register</a>
+        <a href={{url_for('register')}} class="active" id="register"><p>Register</p></a>
         {% endif %}
       </div>
     </div>
     <p id="title"><u>PostPosts</u></p>
+    <div class="searchPost">
+      <form action="/searchpost" method="POST">
+        <input type="text" name="searchQuery" id="searchQuery"placeholder="Search Display Name/Username"><br>
+      </form>
+    </div>
     <div class="container">
         {% if cookie!=None and passCookie!=None: %}
         <div class="createPostWrapper">
@@ -37,7 +42,7 @@
             {% endif %}
             <form action="/createpost" method="post" enctype="multipart/form-data">
                 <div class="textBoxWrapper">
-                    <span class="textBox">Post:<br><input type="text" name="postContent"><br></span>
+                    <span class="textBox">Post:<br><input type="text" name="postContent" class="postContent"><br></span>
                 </div>
                 <div class="uploadBtnWrapper">
                     <button class="btn">Upload Image/Video:</button>
@@ -55,11 +60,11 @@
         {% set fileurl=post[5].replace(" ","%20") %}
         {% if post == posts[0]: %}
         <div class="postContainer" id="firstPost">
-        {% if post[2]!='PostPostsDeveloper':%}
-        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author">@{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        {% if post[2]!='@PostPostsDeveloper':%}
+        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
         {% endif %}
-        {% if post[2]=='PostPostsDeveloper': %}
-        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author" id="developer">@{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        {% if post[2]=='@PostPostsDeveloper': %}
+        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author" id="developer">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
         {% endif %}
         <h2 class="post">{{ post[4] }}</h2>
         {% if post[5] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
@@ -70,11 +75,17 @@
         {% endif %}
         </div>
         {% endif %}
+        
         {% if post != posts[0]: %}
         <div class="postContainer">
-        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author">@{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        {% if post[2]!='@PostPostsDeveloper':%}
+        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        {% endif %}
+        {% if post[2]=='@PostPostsDeveloper': %}
+        <h2 class="author">{{ post[3] }}</h2>&emsp;<h2 class="author" id="developer">{{ post[2] }}</h2>&emsp;<h2 class="date">{{ post[1] }}</h2>
+        {% endif %}
         <h2 class="post">{{ post[4] }}</h2>
-        {% if post[5] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG')):%}
+        {% if post[5] != '' and fileurl.endswith(('.jpeg','.jpg','.png','.gif','.jfif','.PNG','.JPG','.JPEG')):%}
         <img src={{ fileurl }}>
         {% endif %}
         {% if post[5] != '' and fileurl.endswith(('.mp4','.mov','.webm','.ogg','.mpeg','.m4p')):%}
