@@ -5,6 +5,7 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 import os
 import hashlib
+import json
 
 app_root = os.path.dirname(os.path.abspath(__file__))
 warning=''
@@ -35,6 +36,31 @@ def post(author,textToPost,displayName,imageURL=''):
   cur = con.cursor()
   try:
     cur.execute(f'''INSERT INTO posts(date,username,displayName,post,imagePath) VALUES('{date}','{author}','{displayName}','{textToPost}','{imageURL}');''')
+    cur.execute(f'''SELECT postsArray FROM userposts WHERE username='{author}';''')
+    data=cur.fetchall()
+    cur.execute(f'''SELECT MAX(rowid) from posts;''')
+    data2=cur.fetchall()
+    data2=data2[0][0]
+    print(data2)
+    data=data[0][0]
+    print(data)
+    if data!='[]':
+      data=data[1:-1]
+      data=data.split(',')
+      data=list(data)
+      print(data)
+      print(data2)
+      data.append(str(data2))
+      print(data)
+      data=list(map(int,data))
+      data=str(data)
+      print(data)
+      cur.execute(f'''UPDATE userposts SET postsArray='{data}' WHERE username='{author}';''')
+    else:
+      cur.execute(f'''UPDATE userposts SET postsArray='[{data2}]' WHERE username='{author}';''')
+    
+    
+
   except Exception as e:
     print(e)
   con.commit()
@@ -46,8 +72,10 @@ def showPosts(searchParameter=None):
   if searchParameter==None:
     cur.execute('''SELECT rowid,* FROM posts;''')
   
+  elif searchParameter[0]=='@':
+      cur.execute(f'''SELECT rowid,* FROM posts WHERE username='{searchParameter}';''')
   else:
-    cur.execute(f'''SELECT rowid,* FROM posts WHERE username='@'||'{searchParameter}' OR displayName='{searchParameter}' OR post = '{searchParameter}'; ''')
+    cur.execute(f'''SELECT rowid,* FROM posts WHERE displayName='{searchParameter}' OR post = '{searchParameter}'; ''')
   data=cur.fetchall()
   con.close()
   return data
@@ -66,6 +94,15 @@ def getMaxID():
   max=cur.fetchall()
   con.close()
   return max
+
+def userPosts(username):
+  con = sqlite3.connect("PostPosts.db")
+  cur = con.cursor()
+  cur.execute(f'''SELECT * FROM userposts WHERE username='{username}';''')
+  data=cur.fetchall()
+  con.commit()
+  con.close()
+  return data
 
 @app.route('/createpost',methods=['POST'])
 def createPost():
@@ -154,24 +191,36 @@ def register():
       con = sqlite3.connect("PostPosts.db")
       cur = con.cursor()
       cur.execute(f'''INSERT INTO logindetails(username,displayname,passwordHashed) VALUES ('{username}','{display}','{password}');''')
+      cur.execute(f'''INSERT INTO userposts(username,postsArray) VALUES('{username}','[]');''')
       con.commit()
       con.close()
       return redirect('/')
   return render_template('register.html')
 
-@app.route('/searchpost', methods=['POST','GET'])
+@app.route('/search', methods=['POST','GET'])
 def searchPost():
   if request.method=="POST":
-    posts=showPosts(request.form['searchQuery'])
-    userName = request.cookies.get('userName')
-    userPassword=request.cookies.get('userPassword')
-    noContentCookie=request.cookies.get('nocontentwarning')
+    searchQuery=request.form['searchQuery']
+    if searchQuery[0]=='@':
+      return redirect(f'/profiles/{searchQuery[1:]}')
+    else:
+      return redirect(f'/profiles/{searchQuery}')
 
+@app.route("/profiles/<username>")
+def profiles(username):
+  con=sqlite3.connect('PostPosts.db')
+  cur=con.cursor()
+  cur.execute(f'''SELECT * FROM userposts WHERE username='@'||'{username}';''')
+  data=cur.fetchall()
+  con.close()
+  if data!=[]:
+    posts=showPosts('@'+username)
     try:
-      return render_template('index.html',posts=posts.reverse(),noContentCookie=noContentCookie,cookie=userName,passCookie=userPassword)
+      return render_template('profile.html',username=username,posts=reversed(posts))
     except:
-      return render_template('index.html',posts=posts, noContentCookie=noContentCookie,cookie=userName,passCookie=userPassword)
-
+      return 'lmao'
+  else:
+    return 'USER DOESNT EXIST'
 
 @app.route('/')
 def home():

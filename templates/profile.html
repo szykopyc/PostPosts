@@ -4,58 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PostPosts | Home</title>
+    <title>PostPosts | Profile of {{username}}</title>
     <link rel="stylesheet" href='{{ url_for('static', filename='style.css') }}' />
 </head>
 <body>
-  <div id="background">
-    <div class="topnav">
-      <div class="login-container">
-        {% if cookie==None and passCookie==None: %}
-        <form action="/login" method="post">
-          <input type="text" placeholder="Username" name="uname" id="username">
-          <input type="password" placeholder="Password" name="pword" id="password">
-          <button type="submit" id="loginBtn">Login</button>
-        </form>
-        {% endif %}
-        {% if cookie!=None and passCookie!=None: %}
-        <form action="/logout" method="post">
-          <label id="logouttext">Logged in as {{cookie}}&ensp;</label><button type="submit" id="logoutButton">Logout</button>
-        </form>
-        {% endif %}
-        {% if cookie==None and passCookie==None: %}
-        <a href={{url_for('register')}} class="active" id="register"><p>Register</p></a>
-        {% endif %}
-      </div>
-    </div>
-    <p id="title"><u>PostPosts</u></p>
-    <div class="searchPost">
-      <form action="/search" method="POST">
-        <input type="text" name="searchQuery" id="searchQuery"placeholder="Search Username"><br>
-      </form>
-    </div>
-    <div class="container">
-        {% if cookie!=None and passCookie!=None: %}
-        <div class="createPostWrapper">
-            {% if noContentCookie!=None:%}
-            <p>{{noContentCookie}}</p>
-            {% endif %}
-            <form action="/createpost" method="post" enctype="multipart/form-data">
-                <div class="textBoxWrapper">
-                    <span class="textBox">Post:<br><input type="text" name="postContent" class="postContent"><br></span>
-                </div>
-                <div class="uploadBtnWrapper">
-                    <button class="btn">Upload Image/Video:</button>
-                    <input id="file"type = "file" name = "file" /><br>
-                </div>
-                <div class="SubmitBtnWrapper">
-                    <button class="btn">Post!</button>
-                    <input id="submitButton" type="submit" name="post" value="Post!">
-                </div>
-            </form>
-        </div>
-        {% endif %}
-          
+    <div>
+        <p id="title2"><u>{{username}}'s Profile</u></p>
         {% for post in posts: %}
         {% set fileurl=post[5].replace(" ","%20") %}
         {% if post == posts[0]: %}
@@ -95,6 +49,4 @@
         {% endif %}
         {% endfor %}   
     </div>
-  </div>
 </body>
-</html>
