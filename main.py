@@ -215,6 +215,7 @@ def profiles(username):
   con.close()
   if data!=[]:
     posts=showPosts('@'+username)
+    print(posts)
     try:
       return render_template('profile.html',username=username,posts=reversed(posts))
     except:
